@@ -1,0 +1,15 @@
+[project]
+name = "buildiconizer"
+version = "1.0.0"
+description = "Massen-Bildersetzung mit automatischer Transformation"
+requires-python = ">=3.8"
+dependencies = [
+    "flet>=0.25.0",
+    "pillow>=10.0.0",
+]
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
