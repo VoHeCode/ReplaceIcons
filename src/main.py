@@ -170,7 +170,7 @@ def main(page: ft.Page):
 
     async def replace_all_files(e):
         """Ersetzt alle gefundenen Dateien asynchron (UI blockiert nicht)."""
-        global _  # IDE-Hint für async Funktion
+        global _  # IDE-Hint
 
         # Validierung
         if not replacement_image_control.data:
@@ -208,7 +208,7 @@ def main(page: ft.Page):
                 if index % 5 == 0:
                     selected_dir_text.value = (
                         _("🤖 VERARBEITE ({}/{}): {}...").format(index + 1, total_count, Path(target_path).name))
-                    await page.update_async()
+                    page.update()
                     await asyncio.sleep(0.01)  # UI-Refresh ermöglichen
 
                 # Transformation anwenden und speichern
@@ -224,7 +224,7 @@ def main(page: ft.Page):
             replacement_image_control.visible = False
             replacement_image_label.value = _("Ersatzbild erfolgreich auf alle Dateien angewendet.")
 
-            await page.update_async()
+            page.update()
             start_search(None)
 
         except Exception as ex:
@@ -398,14 +398,14 @@ def main(page: ft.Page):
         replacement_file_picker = ft.FilePicker(on_result=replacement_picker_result)
         page.overlay.extend([directory_picker, replacement_file_picker])
         dtitle = _("Wähle das Startverzeichnis")
-        action_button.on_click = lambda _: directory_picker.get_directory_path(dialog_title=dtitle)
+        action_button.on_click = lambda e: directory_picker.get_directory_path(dialog_title=dtitle)
 
         # --- UI-LAYOUT AUFBAUEN ---
         dtitle2 = _("Wähle eine Ersatzdatei")
         page.add(  # Oberste Button-Row
             ft.Row([action_button, ft.VerticalDivider(), ft.Text(_("Filter:"), weight=ft.FontWeight.BOLD), filter_input,
                     ft.VerticalDivider(), ft.ElevatedButton(_("Ersatz-Datei auswählen"), icon=ft.Icons.CLOUD_UPLOAD,
-                                                            on_click=lambda _: replacement_file_picker.pick_files(
+                                                            on_click=lambda e: replacement_file_picker.pick_files(
                                                                 allowed_extensions=["png", "jpg", "jpeg", "gif", "bmp"],
                                                                 allow_multiple=False,
                                                                 dialog_title=dtitle2, ), ),

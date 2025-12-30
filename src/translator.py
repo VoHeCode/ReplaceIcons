@@ -279,11 +279,7 @@ class TranslationSystem:
         self.store_text_metrics(text, fontsize)
         self.resize_text(translated, self.get_width(), fontsize)
 
-        # Try to format, return raw if fails
-        try:
-            return translated.format()
-        except (KeyError, ValueError):
-            return translated
+        return translated
 
     # Alias for gettext compatibility
     def _(self, text: str, fontsize: int = 20) -> str:
